@@ -1,0 +1,32 @@
+﻿@page "/trigger-error"
+@inject HttpClient HttpClient
+
+<h3>TriggerError</h3>
+<button class="btn btn-primary" type="button" @onclick='TriggerHttpClientErrorAsync'>Trigger HttpClient error</button>
+<button class="btn btn-primary" type="button" @onclick="TriggerClientSideError">Trigger client side error</button>
+<button class="btn btn-primary" type="button" @onclick="TriggerClientSideErrorAndResolve">Trigger client side error and resolve</button>
+
+@code {
+    [CascadingParameter]
+    public ErrorBoundary MainErrorBoundary { get; set; } = default!;
+
+    public async Task TriggerHttpClientErrorAsync() => await HttpClient.GetAsync("https://blazorschool.com");
+
+    public void TriggerClientSideError() => throw new Exception("Blazor School");
+
+    public void TriggerClientSideErrorAndResolve()
+    {
+        try
+        {
+            TriggerClientSideError();
+        }
+        catch
+        {
+
+        }
+        finally
+        {
+            MainErrorBoundary.Recover();
+        }
+    }
+}
