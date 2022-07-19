@@ -1,7 +1,15 @@
 ﻿@page "/catching-component-error"
 
 <h3>CatchingComponentError</h3>
+<ErrorBoundary @ref="ComponentErrorBoundary">
+    <ChildContent>
+        <TriggerError/>
+    </ChildContent>
+    <ErrorContent>
+        Catched an exception from the TriggerError componennt. <button class="btn btn-link" @onclick="_ => ComponentErrorBoundary.Recover()">Continue</button>
+    </ErrorContent>
+</ErrorBoundary>
 
 @code {
-
+    public ErrorBoundary ComponentErrorBoundary { get; set; } = default!;
 }
