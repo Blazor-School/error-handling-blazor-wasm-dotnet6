@@ -1,0 +1,36 @@
+﻿@page "/display-http-errors-by-http-client-wrapper"
+@using ErrorHandling.Utils
+@using System.Collections.Specialized
+@inject ExceptionRecorderService ExceptionRecorderService
+@inject BlazorSchoolHttpClientWrapper BlazorSchoolHttpClientWrapper
+@implements IDisposable
+
+<h3>DisplayHttpErrorsByHttpClientWrapper</h3>
+<button class="btn btn-primary" @onclick="TriggerHttpErrorAsync">Trigger HTTP Error</button>
+
+@foreach (var exception in ExceptionRecorderService.Exceptions)
+{
+    <div>@exception.Message</div>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        ExceptionRecorderService.Exceptions.CollectionChanged += RefreshUI;
+    }
+
+    public async Task TriggerHttpErrorAsync()
+    {
+        await BlazorSchoolHttpClientWrapper.GetAsync("https://blazorschool.com");
+    }
+
+    public void RefreshUI(object? sender, NotifyCollectionChangedEventArgs eventArgs)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        ExceptionRecorderService.Exceptions.CollectionChanged -= RefreshUI;
+    }
+}
