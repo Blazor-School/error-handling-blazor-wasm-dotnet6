@@ -1,11 +1,11 @@
-﻿@page "/display-http-errors-by-http-client-wrapper"
+﻿@page "/handling-http-errors-by-http-client-wrapper"
 @using ErrorHandling.Utils
 @using System.Collections.Specialized
 @inject ExceptionRecorderService ExceptionRecorderService
 @inject BlazorSchoolHttpClientWrapper BlazorSchoolHttpClientWrapper
 @implements IDisposable
 
-<h3>DisplayHttpErrorsByHttpClientWrapper</h3>
+<h3>HandlingHttpErrorsByHttpClientWrapper</h3>
 <button class="btn btn-primary" @onclick="TriggerHttpErrorAsync">Trigger HTTP Error</button>
 
 @foreach (var exception in ExceptionRecorderService.Exceptions)
